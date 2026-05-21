@@ -2,11 +2,12 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fraud_app.modules.email_analyzer.service import analyze_email
 from fastapi.middleware.cors import CORSMiddleware
-
+from fraud_app.url_routes import router as url_router
 
 
 
 app = FastAPI(title="Fraud Email Analyzer MVP")
+app.include_router(url_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],   # demo
