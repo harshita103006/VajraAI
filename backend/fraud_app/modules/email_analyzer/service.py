@@ -3,7 +3,8 @@ from .rules import regex_signals
 from .privacy import mask_pii
 from .perplexity import compute_perplexity
 from fraud_app.models.phishing_roberta import predict_phishing
-
+from fraud_app.core.orchestrator import calculate_hybrid_risk
+from fraud_app.core.response_builder import build_response
 ai_detector = pipeline(
     "text-classification",
     model="roberta-base-openai-detector"
@@ -21,9 +22,17 @@ def analyze_email(subject: str, body: str):
     raw_score = float(ai_result.get("score", 0.0))
 
     # ✅ Force: higher score = more suspicious
-    ai_generated_prob = raw_score
+    ai_generated_prob = (
+        raw_score
+        if model_label == "FAKE"
+        else (1 - raw_score)
+    )
 
-    human_label = "Phishing" if ai_generated_prob >= 0.5 else "Legitimate"
+    human_label = (
+        "AI-Generated"
+        if ai_generated_prob >= 0.5
+        else "Human-Written"
+    )
 
     reg = regex_signals(subject, body)
     regex_score = float(reg.get("regex_score", 0.0))
@@ -31,11 +40,24 @@ def analyze_email(subject: str, body: str):
     masked = mask_pii(body)
     pii_found = masked.get("pii_found", {}) or {}
 
-    pii_boost = 0.15 if pii_found else 0.0
-    link_boost = 0.15 if reg.get("urls") else 0.0
+ 
 
     # ✅ Make phishing examples go Critical
-    risk = (0.40 * ai_generated_prob) + (0.45 * regex_score) + pii_boost + link_boost
+    phishing_score = (
+        roberta_result["score"] / 100
+        if roberta_result["label"].lower() == "phishing"
+        else 0
+    )
+
+    risk_percent = calculate_hybrid_risk(
+        phishing_score=phishing_score,
+        regex_score=regex_score,
+        ai_generated_score=ai_generated_prob,
+        has_pii=bool(pii_found),
+        has_urls=bool(reg.get("urls"))
+    )
+
+    risk = risk_percent / 100
 
     
         
@@ -51,7 +73,7 @@ def analyze_email(subject: str, body: str):
     else:
         tier = "Safe"
 
-    reasons = [f"ML phishing probability: {round(ai_generated_prob, 2)}"]
+    reasons = [f"AI-generated probability: {round(ai_generated_prob, 2)}"]
     reasons += reg.get("flags", [])[:3]
 
     
@@ -62,26 +84,30 @@ def analyze_email(subject: str, body: str):
         reasons.append("PII detected and masked")
 
     if roberta_result["label"].lower() == "phishing":
-        risk += 0.25
         reasons.append("RoBERTa phishing detection")
     
         
-    return {
-        "version": "V2-mlprob-rawscore",
-        "risk": {"risk_percent": risk_percent, "tier": tier},
-        "ml": {
-            "label": human_label,
-            "model_label": model_label,
-            "raw_score": round(raw_score, 4),
-            "phishing_prob": round(ai_generated_prob, 4),
-        },
-        "regex": reg,
-        "privacy": {
-            "pii_found": pii_found,
-            "masked_preview": masked.get("masked_text", "")[:250],
-        },
-        "ai_text": {"perplexity": ppl},
-
-        "top_reasons": reasons[:6],
-        "roberta_analysis": roberta_result
-    }
+    return build_response(
+        module="email_shield",
+        risk_score=risk_percent,
+        risk_level=tier,
+        flags=reasons[:6],
+        explanations=[],
+        metadata={
+            "ml": {
+                "label": human_label,
+                "model_label": model_label,
+                "raw_score": round(raw_score, 4),
+                "ai_generated_prob": round(ai_generated_prob, 4),
+            },
+            "regex": reg,
+            "privacy": {
+                "pii_found": pii_found,
+             "masked_preview": masked.get("masked_text", "")[:250],
+            },
+            "ai_text": {
+                "perplexity": ppl
+            },
+            "roberta_analysis": roberta_result
+        }
+    )
