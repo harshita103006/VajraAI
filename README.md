@@ -1,77 +1,133 @@
-# InnovateX
+# 🛡️ VajraAI
 
-VajraAI – AI-Powered Email Fraud Detection (Phase 1)
+AI-powered cybersecurity threat intelligence platform focused on phishing detection, malicious URL analysis and prompt-injection prevention.
 
-🚀 Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/AI-Cybersecurity-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/FastAPI-Backend-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" />
+</p>
 
-VajraAI is an AI-driven fraud detection platform designed to combat emerging AI-generated threats.
-Currently, the platform implements the Email Fraud Detection Module, which analyzes suspicious emails using a hybrid NLP-based approach to detect phishing, AI-generated text, and credential exposure patterns.
-This is Phase 1 implementation of the larger VajraAI system.
+---
 
+## 🚀 Overview
 
-✅ Implemented Features (Current Working System)
+VajraAI is an intelligent cybersecurity platform designed to identify and analyze modern digital threats using AI-powered workflows.
 
-📧 Email Analyzer Module
+The platform focuses on:
+- phishing detection
+- malicious URL analysis
+- prompt injection prevention
+- real-time threat monitoring
+- secure authentication workflows
 
-The Email Analyzer performs:
+Built with a scalable FastAPI backend and responsive frontend dashboards, VajraAI aims to simplify cyber threat analysis through intelligent automation.
 
->AI-generated text detection
->Phishing intent detection
->Urgency & manipulation pattern detection
->Suspicious link pattern detection
->Credential request detection
->Named Entity Recognition (NER) for sensitive data masking
+---
 
-🎯 Output Includes:
+## ⚡ Features
 
->Risk Score (0–100%)
->Risk Level (Low / Medium / High / Critical)
->Flagged Indicators
->Masked Email Preview
+- 🛡️ AI-powered phishing detection
+- 🔗 Malicious URL analysis
+- 🤖 Prompt injection prevention workflows
+- 📊 Real-time analytics dashboard
+- 🔐 JWT-based authentication
+- ⚡ FastAPI backend architecture
+- 📈 Threat monitoring and reporting
+- 🌐 Responsive frontend interface
 
+---
 
-🏗 Current Architecture
+## 🧠 Tech Stack
 
->FastAPI Backend
->Modular Email Detection Engine
->Risk Scoring Logic (Email module only)
->Web-based Frontend Interface
+### Backend
+- FastAPI
+- Python
+- JWT Authentication
+- REST APIs
 
+### Frontend
+- React.js
+- HTML/CSS
+- JavaScript
 
-🛠 Tech Stack
+### AI / Security
+- Threat Analysis Pipelines
+- URL Classification
+- Prompt Security Logic
 
-Backend:
+---
 
->Python
->FastAPI
->NLP Models (BERT / RoBERTa or equivalent)
->Perplexity Scoring
->Regex + NER
+## 🏗️ System Architecture
 
-Frontend:
+```text
+User Request
+     ↓
+Frontend Dashboard
+     ↓
+FastAPI Backend
+     ↓
+AI Threat Analysis Engine
+     ↓
+Detection + Risk Scoring
+     ↓
+Analytics & Monitoring
+```
 
->HTML
->CSS
->JavaScript
+---
 
+## 📂 Project Structure
 
-📌 Development Status
+```bash
+VajraAI/
+│── frontend/
+│── backend/
+│── models/
+│── api/
+│── assets/
+│── README.md
+```
 
-Module	Status
+---
 
->Email Analyzer	✅ Completed
->Attachment Sandbox	🔄 Planned
->URL & Website Analyzer	🔄 Planned
->Deepfake Voice Detection	🔄 Planned
->Central Multi-Module Risk Engine	🔄 Planned
+## 🚀 Installation
 
+### Clone Repository
 
-🔮 Future Expansion
+```bash
+git clone https://github.com/harshita103006/VajraAI.git
+cd VajraAI
+```
 
-VajraAI is designed as a modular microservices platform. Future phases will include:
+### Backend Setup
 
->Attachment malware sandbox
->URL & phishing website detection
->Deepfake voice scam detection
->Prompt injection testing sandbox
->Enterprise-grade deployment & scaling
+```bash
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### Frontend Setup
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## 🌌 Future Scope
+
+- Advanced threat intelligence pipelines
+- Browser extension integration
+- Real-time SOC dashboards
+- Multi-agent AI security workflows
+- Cloud deployment and scaling
+
+---
+
+## 👩‍💻 Author
+
+Harshita Joshi
+
+AI Security • Backend Engineering • Intelligent Systems
