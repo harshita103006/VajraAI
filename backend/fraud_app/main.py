@@ -63,3 +63,12 @@ def health():
 @app.post("/analyze/email")
 def analyze(payload: EmailIn):
     return analyze_email(payload.subject, payload.body)
+
+
+@app.get("/")
+def home():
+
+    return {
+        "project": "Vajra AI",
+        "status": "running"
+    }
