@@ -5,17 +5,29 @@ from .perplexity import compute_perplexity
 from fraud_app.models.phishing_roberta import predict_phishing
 from fraud_app.core.orchestrator import calculate_hybrid_risk
 from fraud_app.core.response_builder import build_response
-ai_detector = pipeline(
-    "text-classification",
-    model="roberta-base-openai-detector"
-)
+ai_detector = None
+
+def get_ai_detector():
+
+    global ai_detector
+
+    if ai_detector is None:
+
+        from transformers import pipeline
+
+        ai_detector = pipeline(
+            "text-classification",
+            model="roberta-base-openai-detector"
+        )
+
+    return ai_detector
 
 
 def analyze_email(subject: str, body: str):
     text = f"Subject: {subject}\nBody: {body}"
     ppl = compute_perplexity(text)
-   
-    ai_result = ai_detector(text)[0]
+    detector = get_ai_detector()
+    ai_result = detector(text)[0]
     roberta_result = predict_phishing(text)
 
     model_label = str(ai_result.get("label", "")).upper()
