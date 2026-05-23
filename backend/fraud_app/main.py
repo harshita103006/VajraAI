@@ -42,10 +42,12 @@ app.include_router(prompt_router)
 app.include_router(attachment_router)
 app.include_router(threat_router)
 app.include_router(feedback_router)
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # demo
-    
+    allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

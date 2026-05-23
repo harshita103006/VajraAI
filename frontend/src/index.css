@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  /* Base palette — deep space navy, not pure black */
+  --void:        #050608;
+  --base:        #080a0f;
+  --surface-0:   #0c0e15;
+  --surface-1:   #10131c;
+  --surface-2:   #151924;
+  --surface-3:   #1b2030;
+  --surface-4:   #212840;
+
+  /* Glass layers */
+  --glass-1:     rgba(255,255,255,0.028);
+  --glass-2:     rgba(255,255,255,0.05);
+  --glass-3:     rgba(255,255,255,0.08);
+
+  /* Borders */
+  --line-0:      rgba(255,255,255,0.04);
+  --line-1:      rgba(255,255,255,0.07);
+  --line-2:      rgba(255,255,255,0.13);
+  --line-3:      rgba(255,255,255,0.22);
+
+  /* Text scale */
+  --ink-0:       #f4f6fc;
+  --ink-1:       #a8b0cc;
+  --ink-2:       #636a88;
+  --ink-3:       #373d52;
+
+  /* Accent — electric lime-gold, precise */
+  --a:           #c8ff00;
+  --a-dim:       rgba(200,255,0,0.09);
+  --a-glow:      rgba(200,255,0,0.22);
+  --a-text:      #d4ff1a;
+
+  /* Threat severity */
+  --crit:        #f03;
+  --crit-glow:   rgba(255,0,51,0.18);
+  --crit-dim:    rgba(255,0,51,0.09);
+
+  --high:        #ff6b00;
+  --high-glow:   rgba(255,107,0,0.18);
+  --high-dim:    rgba(255,107,0,0.09);
+
+  --med:         #f5c400;
+  --med-glow:    rgba(245,196,0,0.18);
+  --med-dim:     rgba(245,196,0,0.09);
+
+  --low:         #00e5a0;
+  --low-glow:    rgba(0,229,160,0.18);
+  --low-dim:     rgba(0,229,160,0.09);
+
+  --safe:        #00d97e;
+  --safe-glow:   rgba(0,217,126,0.18);
+  --safe-dim:    rgba(0,217,126,0.09);
+
+  /* Fonts */
+  --f-display:   'Outfit', sans-serif;
+  --f-body:      'Space Grotesk', sans-serif;
+  --f-mono:      'JetBrains Mono', monospace;
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.16,1,0.3,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-in:     cubic-bezier(0.4,0,1,1);
+
+  /* Layout */
+  --sidebar:     220px;
+  --header-h:    52px;
+  --r-sm:        6px;
+  --r-md:        10px;
+  --r-lg:        16px;
+  --r-xl:        22px;
+  --r-pill:      999px;
+}
+
+/* ─── RESET & BASE ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 14px; color-scheme: dark; }
+
+body {
+  background: var(--base);
+  color: var(--ink-0);
+  font-family: var(--f-body);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-3); }
+
+/* Selection */
+::selection { background: rgba(200,255,0,0.15); color: var(--a); }
+
+/* Focus */
+:focus-visible { outline: 1.5px solid var(--a); outline-offset: 2px; border-radius: 4px; }
+
+/* ─── BACKGROUND GRID SYSTEM ────────────────────────────── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.grid-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 30%, transparent 100%);
+}
+
+.grid-bg::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(200,255,0,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── GLASS CARD ─────────────────────────────────────────── */
+.glass {
+  background: var(--glass-1);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid var(--line-1);
+}
+
+.glass-strong {
+  background: var(--glass-2);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--line-2);
+}
+
+/* ─── PANEL DEPTH ─────────────────────────────────────────── */
+.panel {
+  background: var(--surface-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-2) 20%, var(--line-2) 80%, transparent);
+  pointer-events: none;
+}
+
+.panel-elevated {
+  background: var(--surface-2);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-lg);
+  box-shadow: 0 1px 0 0 var(--line-2) inset, 0 24px 48px rgba(0,0,0,0.3);
+}
+
+/* ─── GLOW EFFECTS ───────────────────────────────────────── */
+.glow-accent {
+  box-shadow: 0 0 0 1px var(--a-glow), 0 8px 32px rgba(200,255,0,0.08);
+}
+
+.glow-crit {
+  box-shadow: 0 0 0 1px rgba(255,0,51,0.3), 0 8px 32px rgba(255,0,51,0.1);
+}
+
+/* ─── TYPOGRAPHY SCALE ───────────────────────────────────── */
+.t-hero {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(42px, 7vw, 80px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.t-h1 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(24px, 3vw, 36px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.t-h2 {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.025em;
+}
+
+.t-h3 {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.015em;
+}
+
+.t-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.t-mono {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.t-data {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* ─── INTERACTIVE STATES ──────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border-radius: var(--r-md);
+  background: var(--a);
+  color: var(--base);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s var(--ease-out), box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(200,255,0,0.25);
+}
+
+.btn-primary:active { transform: translateY(0px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: var(--r-md);
+  background: var(--glass-1);
+  border: 1px solid var(--line-1);
+  color: var(--ink-1);
+  font-family: var(--f-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-ghost:hover {
+  background: var(--glass-2);
+  border-color: var(--line-2);
+  color: var(--ink-0);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--crit-dim);
+  border: 1px solid rgba(255,0,51,0.25);
+  color: var(--crit);
+  font-family: var(--f-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-danger:hover { background: rgba(255,0,51,0.15); }
+
+/* ─── INPUTS ─────────────────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--surface-0);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r-md);
+  color: var(--ink-0);
+  font-family: var(--f-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: var(--a);
+  box-shadow: 0 0 0 3px var(--a-dim);
+}
+
+.input::placeholder { color: var(--ink-3); }
+
+.input-mono {
+  font-family: var(--f-mono);
+}
+
+/* ─── NAV LINK ───────────────────────────────────────────── */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  margin: 1px 6px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.nav-link:hover {
+  background: var(--glass-2);
+  color: var(--ink-1);
+}
+
+.nav-link.active {
+  background: var(--glass-2);
+  color: var(--ink-0);
+  font-weight: 500;
+}
+
+/* ─── STATUS BADGE ───────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+}
+
+/* ─── SCAN PROGRESS ──────────────────────────────────────── */
+@keyframes scan-beam {
+  0%   { top: -2px; opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes data-stream {
+  0%   { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── SKELETON LOADER ────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-1) 25%, var(--surface-2) 50%, var(--surface-1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--r-sm);
+}
+
+/* ─── THREAT LEVEL COLORS (utility) ─────────────────────── */
+.tc-crit { color: var(--crit); }
+.tc-high { color: var(--high); }
+.tc-med  { color: var(--med);  }
+.tc-low  { color: var(--low);  }
+.tc-safe { color: var(--safe); }
+.tc-a    { color: var(--a);    }
+.tc-1    { color: var(--ink-1); }
+.tc-2    { color: var(--ink-2); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hide-sm { display: none !important; }
+  html { font-size: 13px; }
+}
+
+@media (max-width: 1024px) {
+  .hide-md { display: none !important; }
+}
+
+/* ─── SCROLL FADE EDGES ──────────────────────────────────── */
+.fade-scroll {
+  mask-image: linear-gradient(to bottom, transparent, black 12px, black calc(100% - 12px), transparent);
+}
+
+/* ─── DIVIDER ────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-1) 30%, var(--line-1) 70%, transparent);
+  margin: 4px 0;
+}
+
+/* ─── NOISE OVERLAY ──────────────────────────────────────── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── CHART TOOLTIP ──────────────────────────────────────── */
+.chart-tooltip {
+  background: var(--surface-3) !important;
+  border: 1px solid var(--line-2) !important;
+  border-radius: var(--r-md) !important;
+  padding: 10px 14px !important;
+  font-family: var(--f-mono) !important;
+  font-size: 11px !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5) !important;
+}
