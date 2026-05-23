@@ -1,13 +1,15 @@
-# 🛡️ VajraAI
+---
+title: Vajra AI
+emoji: 🛡️
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
 
-AI-powered cybersecurity threat intelligence platform focused on phishing detection, malicious URL analysis and prompt-injection prevention.
+# Vajra AI
 
-<p align="center">
-  <img src="https://img.shields.io/badge/AI-Cybersecurity-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/FastAPI-Backend-green?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" />
-</p>
+AI-powered cybersecurity and fraud detection platform.
 
 ---
 
