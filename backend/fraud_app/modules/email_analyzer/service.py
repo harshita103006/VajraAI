@@ -1,7 +1,7 @@
 from transformers import pipeline
 from .rules import regex_signals
 from .privacy import mask_pii
-
+from .perplexity import compute_perplexity
 from fraud_app.models.phishing_roberta import predict_phishing
 from fraud_app.core.orchestrator import calculate_hybrid_risk
 from fraud_app.core.response_builder import build_response
@@ -22,7 +22,7 @@ def get_ai_detector():
 
 def analyze_email(subject: str, body: str):
     text = f"Subject: {subject}\nBody: {body}"
-    
+    ppl = compute_perplexity(text)
     detector = get_ai_detector()
     
     roberta_result = predict_phishing(text)
@@ -89,7 +89,9 @@ def analyze_email(subject: str, body: str):
         flags=reasons[:6],
         explanations=[],
         metadata={
-            
+            "ai_text": {
+                 "perplexity": ppl
+            },
             "regex": reg,
             "privacy": {
                 "pii_found": pii_found,
