@@ -7,124 +7,102 @@ sdk: docker
 pinned: false
 ---
 
-# Vajra AI
+# 🛡️ Vajra AI
 
-AI-powered cybersecurity and fraud detection platform.
+Cybersecurity intelligence platform engineered to detect phishing attempts, malicious URLs, prompt injection attacks and suspicious digital activity using AI-assisted analysis pipelines.
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/AI-Security-blueviolet?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Live-success?style=for-the-badge" />
+</p>
 
-## 🚀 Overview
-
-VajraAI is an intelligent cybersecurity platform designed to identify and analyze modern digital threats using AI-powered workflows.
-
-The platform focuses on:
-- phishing detection
-- malicious URL analysis
-- prompt injection prevention
-- real-time threat monitoring
-- secure authentication workflows
-
-Built with a scalable FastAPI backend and responsive frontend dashboards, VajraAI aims to simplify cyber threat analysis through intelligent automation.
+<p align="center">
+  🌐 Live Deployment <br/>
+  https://vajra-ai-ten.vercel.app/
+</p>
 
 ---
 
-## ⚡ Features
+## ⚡ Platform Capabilities
 
-- 🛡️ AI-powered phishing detection
-- 🔗 Malicious URL analysis
-- 🤖 Prompt injection prevention workflows
-- 📊 Real-time analytics dashboard
-- 🔐 JWT-based authentication
-- ⚡ FastAPI backend architecture
-- 📈 Threat monitoring and reporting
-- 🌐 Responsive frontend interface
+### 📧 Email Shield
+Analyzes suspicious email patterns through phishing detection, PII masking, regex-based threat analysis and hybrid risk scoring pipelines.
+
+### 🌐 URL Shield
+Detects malicious domains, deceptive login pages and suspicious URL structures commonly associated with phishing campaigns.
+
+### 🧠 Prompt Shield
+Identifies jailbreak attempts, prompt injection attacks and system prompt leakage behavior targeting LLM-based systems.
+
+### 📎 Attachment Shield
+Performs MIME validation, extension-based inspection and malicious attachment flagging for potentially unsafe files.
+
+### 📊 Threat Intelligence
+Maintains security logs, threat statistics and domain intelligence records for monitoring suspicious activity.
 
 ---
 
-## 🧠 Tech Stack
+## 🧱 Infrastructure & Engineering
 
-### Backend
+Vajra AI is designed using modular backend architecture and scalable deployment workflows for production-oriented AI security systems.
+
+### Core Infrastructure
+- FastAPI backend architecture
+- Modular API routing system
+- Environment-based configuration management
+- CORS-secured API communication
+- Rate limiting & request protection
+- Dockerized deployment pipelines
+
+### Deployment Stack
+- HuggingFace production hosting
+- Vercel frontend deployment
+- API-driven frontend/backend integration
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend & APIs
 - FastAPI
 - Python
-- JWT Authentication
 - REST APIs
 
-### Frontend
-- React.js
-- HTML/CSS
-- JavaScript
+### Security & Detection
+- Regex-based threat analysis
+- Prompt injection defense
+- URL intelligence pipelines
+- Risk scoring systems
 
-### AI / Security
-- Threat Analysis Pipelines
-- URL Classification
-- Prompt Security Logic
+### Deployment & DevOps
+- Docker
+- HuggingFace Spaces
+- Vercel
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture Flow
 
 ```text
 User Request
-     ↓
+      ↓
 Frontend Dashboard
-     ↓
+      ↓
 FastAPI Backend
-     ↓
-AI Threat Analysis Engine
-     ↓
-Detection + Risk Scoring
-     ↓
-Analytics & Monitoring
+      ↓
+Security Analysis Modules
+      ↓
+Threat Classification Engine
+      ↓
+Risk Scoring & Monitoring
 ```
 
 ---
 
-## 📂 Project Structure
+## 🌌 Vision
 
-```bash
-VajraAI/
-│── frontend/
-│── backend/
-│── models/
-│── api/
-│── assets/
-│── README.md
-```
-
----
-
-## 🚀 Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/harshita103006/VajraAI.git
-cd VajraAI
-```
-
-### Backend Setup
-
-```bash
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### Frontend Setup
-
-```bash
-npm install
-npm run dev
-```
-
----
-
-## 🌌 Future Scope
-
-- Advanced threat intelligence pipelines
-- Browser extension integration
-- Real-time SOC dashboards
-- Multi-agent AI security workflows
-- Cloud deployment and scaling
+Vajra AI aims to evolve into a unified AI-powered cybersecurity platform capable of defending modern digital systems against phishing, social engineering and adversarial AI threats through intelligent automated analysis.
 
 ---
 
