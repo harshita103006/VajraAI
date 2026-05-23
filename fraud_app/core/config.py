@@ -1,0 +1,13 @@
+API_KEY = "vajra-secret-key"
+
+DB_NAME = "vajra_ai.db"
+
+URL_HIGH_RISK_THRESHOLD = 70
+
+MAX_RISK_SCORE = 100
+
+SHORT_URL_RISK = 20
+
+NEW_DOMAIN_RISK = 25
+
+REDIRECT_RISK = 15
