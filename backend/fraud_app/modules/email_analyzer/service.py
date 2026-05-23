@@ -1,7 +1,7 @@
 from transformers import pipeline
 from .rules import regex_signals
 from .privacy import mask_pii
-from .perplexity import compute_perplexity
+
 from fraud_app.models.phishing_roberta import predict_phishing
 from fraud_app.core.orchestrator import calculate_hybrid_risk
 from fraud_app.core.response_builder import build_response
@@ -15,36 +15,19 @@ def get_ai_detector():
 
         from transformers import pipeline
 
-        ai_detector = pipeline(
-            "text-classification",
-            model="roberta-base-openai-detector"
-        )
+        
 
     return ai_detector
 
 
 def analyze_email(subject: str, body: str):
     text = f"Subject: {subject}\nBody: {body}"
-    ppl = compute_perplexity(text)
+    
     detector = get_ai_detector()
-    ai_result = detector(text)[0]
+    
     roberta_result = predict_phishing(text)
 
-    model_label = str(ai_result.get("label", "")).upper()
-    raw_score = float(ai_result.get("score", 0.0))
-
-    # ✅ Force: higher score = more suspicious
-    ai_generated_prob = (
-        raw_score
-        if model_label == "FAKE"
-        else (1 - raw_score)
-    )
-
-    human_label = (
-        "AI-Generated"
-        if ai_generated_prob >= 0.5
-        else "Human-Written"
-    )
+    
 
     reg = regex_signals(subject, body)
     regex_score = float(reg.get("regex_score", 0.0))
@@ -64,7 +47,7 @@ def analyze_email(subject: str, body: str):
     risk_percent = calculate_hybrid_risk(
         phishing_score=phishing_score,
         regex_score=regex_score,
-        ai_generated_score=ai_generated_prob,
+        ai_generated_score=0,
         has_pii=bool(pii_found),
         has_urls=bool(reg.get("urls"))
     )
@@ -106,20 +89,13 @@ def analyze_email(subject: str, body: str):
         flags=reasons[:6],
         explanations=[],
         metadata={
-            "ml": {
-                "label": human_label,
-                "model_label": model_label,
-                "raw_score": round(raw_score, 4),
-                "ai_generated_prob": round(ai_generated_prob, 4),
-            },
+            
             "regex": reg,
             "privacy": {
                 "pii_found": pii_found,
              "masked_preview": masked.get("masked_text", "")[:250],
             },
-            "ai_text": {
-                "perplexity": ppl
-            },
+            
             "roberta_analysis": roberta_result
         }
     )
